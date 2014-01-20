@@ -1,5 +1,6 @@
-{% extends "index.html" %}
 
+{% extends "index.html" %}
+{% load custom_tags %}
 {% block content %}
   <div class="container">
     <div class="row">
@@ -9,9 +10,7 @@
       </div>
       <ul class="col-lg-12">
         {% for item in notes %}
-          <li class="">
-            <p class="text-note">{{ item.text }}</p>
-          </li>
+          {% text_note item.id %}
         {% endfor %}
       </ul>
     </div><!-- /.row -->
