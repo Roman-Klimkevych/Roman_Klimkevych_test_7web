@@ -1,10 +1,53 @@
-from django.http import HttpResponse
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+from django.views.generic import View
 from django.views.generic import ListView
+from django.views.generic.edit import FormView
+from django.views.generic.edit import FormMixin
+from django.views.generic.list import MultipleObjectMixin
 from notes.models import Notes
+from notes.forms import AddNoteForm
 
-class NotesView(ListView):
+class NotesDisplay(FormMixin, ListView):
 	model = Notes
 	context_object_name = "notes"
+	
+	def get_context_data(self, **kwargs):
+		context = super(NotesDisplay, self).get_context_data(**kwargs)
+		#form_class = self.get_form_class()
+		context['form'] = AddNoteForm(initial={
+        	'note': '# note',
+    		},)
+		return context
+	
+class NotesFormProcessor(MultipleObjectMixin, FormView):
+	model = Notes
+	form_class = AddNoteForm
+	context_object_name = "notes"
+	template_name = 'notes/notes_list.html'
 
-	def home(self, *args, **kwargs):
-		return HttpResponse()	
+	def post(self, request, *args, **kwargs):
+		form = AddNoteForm(request.POST)
+		self.object_list = self.get_queryset()
+		if form.is_valid():
+			messages.success(request, 'Your text note has been successfully added!!!')
+ 			return self.form_valid(form)
+ 		else:
+ 			print form
+			return super(NotesFormProcessor, self).form_invalid(form)
+	
+	def form_valid(self, form):
+		return super(NotesFormProcessor, self).form_valid(form)
+	
+	def get_success_url(self):
+		return reverse('text_notes')
+
+class NotesView(View):
+
+	def get(self, request, *args, **kwargs):
+		view = NotesDisplay.as_view()
+		return view(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		view = NotesFormProcessor.as_view()
+		return view(request, *args, **kwargs)

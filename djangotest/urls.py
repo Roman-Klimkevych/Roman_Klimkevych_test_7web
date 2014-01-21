@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', NotesView.as_view()),
+    url(r'^$', NotesView.as_view(), name="text_notes"),
     # url(r'^hellodjango/', include('hellodjango.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
