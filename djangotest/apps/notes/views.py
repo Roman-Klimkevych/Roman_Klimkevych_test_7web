@@ -9,34 +9,34 @@ from notes.models import Notes
 from notes.forms import AddNoteForm
 
 class NotesDisplay(FormMixin, ListView):
-	model = Notes
-	context_object_name = "notes"
+	queryset = Notes.objects.order_by('-id')
+	context_object_name = 'notes'
 	
 	def get_context_data(self, **kwargs):
 		context = super(NotesDisplay, self).get_context_data(**kwargs)
-		#form_class = self.get_form_class()
-		context['form'] = AddNoteForm(initial={
-        	'note': '# note',
-    		},)
+		context['form'] = AddNoteForm()
 		return context
 	
 class NotesFormProcessor(MultipleObjectMixin, FormView):
 	model = Notes
 	form_class = AddNoteForm
-	context_object_name = "notes"
+	context_object_name = 'notes'
 	template_name = 'notes/notes_list.html'
 
 	def post(self, request, *args, **kwargs):
 		form = AddNoteForm(request.POST)
 		self.object_list = self.get_queryset()
 		if form.is_valid():
-			messages.success(request, 'Your text note has been successfully added!!!')
+			messages.success(request, "Your text note has been successfully added!!!")
  			return self.form_valid(form)
  		else:
- 			print form
-			return super(NotesFormProcessor, self).form_invalid(form)
+ 			return super(NotesFormProcessor, self).form_invalid(form)
 	
 	def form_valid(self, form):
+		note_id = Notes.objects.latest('id').id + 1
+		new_note = form.cleaned_data['note']
+		added_note = Notes(title="Note_" + str(note_id), text=new_note)
+		added_note.save()
 		return super(NotesFormProcessor, self).form_valid(form)
 	
 	def get_success_url(self):
