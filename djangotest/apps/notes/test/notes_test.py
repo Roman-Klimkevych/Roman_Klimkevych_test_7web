@@ -13,26 +13,26 @@ class MyTestCase(WebTest):
     app = TestApp(application)
     
 
-    def testNotes(self):
+    def test_notes(self):
         # check response status
         resp = self.app.get(reverse('text_notes'))
-        assert resp.status == '200 OK'
+        self.assertEqual(resp.status_code, 200)
         
         # check text note in response
         assert 'Lorem ipsum dolor sit amet' in resp
 
-    def testNotesForm(self):
+    def test_notes_form(self):
         # check form.is_valid
         resp = self.app.get(reverse('text_notes'))
         form = resp.form
         form['note'] = 'Note with more than 10 symbols'
         res = form.submit()
-        assert res.status_int == 302
+        self.assertEqual(res.status_code, 302)
         resp = self.app.get(reverse('text_notes'))
         assert 'Your text note has been successfully added!!!' in resp
 
         # check form.is_invalid
         form['note'] = '123456789'
         res = form.submit()
-        assert res.status_int == 200
+        self.assertEqual(resp.status_code, 200)
         assert 'Your note should contain at least 10 symbols!' in res
