@@ -18,7 +18,7 @@ class NotesDisplay(FormMixin, ListView):
 		return context
 	
 class NotesFormProcessor(MultipleObjectMixin, FormView):
-	model = Notes
+	queryset = Notes.objects.order_by('-id')
 	form_class = AddNoteForm
 	context_object_name = 'notes'
 	template_name = 'notes/notes_list.html'
