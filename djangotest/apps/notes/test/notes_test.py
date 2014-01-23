@@ -36,3 +36,13 @@ class MyTestCase(WebTest):
         res = form.submit()
         self.assertEqual(resp.status_code, 200)
         assert "Your note should contain at least 10 symbols!" in res
+
+    def test_form_field(self):
+        # check form field functionality
+        resp = self.app.get(reverse('text_notes'))
+        form = resp.form
+        form['note'] = "Note with more than 10 symbols"
+        res = form.submit()
+        self.assertEqual(res.status_code, 302)
+        resp = self.app.get(reverse('text_notes'))
+        assert "NOTE WITH MORE THAN 10 SYMBOLS" in resp
