@@ -16,7 +16,7 @@ class NotesDisplay(FormMixin, ListView):
     
     queryset = Notes.objects.order_by('-id')    
     context_object_name = 'notes'
-	
+    
     def get_context_data(self, **kwargs):
         """ Add form to the context data"""
         context = super(NotesDisplay, self).get_context_data(**kwargs)
