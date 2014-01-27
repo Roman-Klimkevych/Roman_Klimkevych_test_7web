@@ -5,24 +5,38 @@ from django.core.urlresolvers import reverse
 
 class MyTestCase(WebTest):
 
-    # some initial data
+    """
+    Create test case for testing notes application
+
+    First test case gets some initial data and application to be tested, 
+    then each function tests single task to be completed
+
+    """
+
+    """ Some initial data """
     fixtures = ['initial_data.json']
     
-    # application to be tessted
+    """ Application to be tested """
     application = get_wsgi_application()
     app = TestApp(application)
     
 
     def test_notes(self):
-        # check response status
+        
+        """ Test that app shows list of text notes """
+
+        """ Check response status """
         resp = self.app.get(reverse('text_notes'))
         self.assertEqual(resp.status_code, 200)
         
-        # check text note in response
+        """ Check text note in response """
         assert "Lorem ipsum dolor sit amet" in resp
 
     def test_notes_form(self):
-        # check form.is_valid
+        
+        """ Test the abilit to add new text note """
+
+        """ Check that form.is_valid works as expected """
         resp = self.app.get(reverse('text_notes'))
         form = resp.form
         form['note'] = "Note with more than 10 symbols"
@@ -31,18 +45,18 @@ class MyTestCase(WebTest):
         resp = self.app.get(reverse('text_notes'))
         assert "Your text note has been successfully added!!!" in resp
 
-        # check form.is_invalid
+        """ Check that form.is_invalid works as expected """
         form['note'] = '123456789'
         res = form.submit()
         self.assertEqual(resp.status_code, 200)
         assert "Your note should contain at least 10 symbols!" in res
 
     def test_form_field(self):
-        # check form field functionality
+        """ Test custom form field that returns notes changed to upper case"""
         resp = self.app.get(reverse('text_notes'))
         form = resp.form
-        form['note'] = "Note with more than 10 symbols"
+        form['note'] = "Note changed to upper case"
         res = form.submit()
         self.assertEqual(res.status_code, 302)
         resp = self.app.get(reverse('text_notes'))
-        assert "NOTE WITH MORE THAN 10 SYMBOLS" in resp
+        assert "NOTE CHANGED TO UPPER CASE" in resp
