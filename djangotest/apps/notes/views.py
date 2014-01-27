@@ -16,11 +16,14 @@ class NotesDisplay(FormMixin, ListView):
     
     queryset = Notes.objects.order_by('-id')    
     context_object_name = 'notes'
+    # count = len(queryset)
+    # print count
 	
     def get_context_data(self, **kwargs):
         """ Add form to the context data"""
         context = super(NotesDisplay, self).get_context_data(**kwargs)
         context['form'] = AddNoteForm()
+        # context['count'] = self.count
         return context
 	
 class NotesFormProcessor(MultipleObjectMixin, FormView):
@@ -33,7 +36,7 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
     form_class = AddNoteForm
     context_object_name = 'notes'
     template_name = 'notes/notes_list.html'
-
+    
     def post(self, request, *args, **kwargs):
         """ Check wether the form is valid or not"""
         form = AddNoteForm(request.POST)
