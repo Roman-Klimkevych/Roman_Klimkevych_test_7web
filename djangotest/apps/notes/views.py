@@ -16,13 +16,13 @@ class NotesDisplay(FormMixin, ListView):
     
     queryset = Notes.objects.order_by('-id')    
     context_object_name = 'notes'
-    
+
     def get_context_data(self, **kwargs):
         """ Add form to the context data"""
         context = super(NotesDisplay, self).get_context_data(**kwargs)
         context['form'] = AddNoteForm()
         return context
-	
+
 class NotesFormProcessor(MultipleObjectMixin, FormView):
     
     """
@@ -43,7 +43,7 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
             return self.form_valid(form)
         else:
             return super(NotesFormProcessor, self).form_invalid(form)
-	
+
     def form_valid(self, form):
         """ Save note to the database when the form is valid"""
         note_id = Notes.objects.latest('id').id + 1
@@ -51,7 +51,7 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
         added_note = Notes(title="Note_" + str(note_id), text=new_note)
         added_note.save()
         return super(NotesFormProcessor, self).form_valid(form)
-	
+
     def get_success_url(self):
         """ Return URL to redirect when the form is valid"""
         return reverse('text_notes')
