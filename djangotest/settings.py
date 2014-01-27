@@ -107,7 +107,7 @@ ROOT_URLCONF = 'djangotest.urls'
 WSGI_APPLICATION = 'djangotest.wsgi.application'
 
 TEMPLATE_DIRS = (
-    'djangotest/libs/Templates'
+    'djangotest/Templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -179,5 +179,5 @@ STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'libs/static'),
+    os.path.join(BASE_DIR, 'static'),
 )
