@@ -60,3 +60,13 @@ class MyTestCase(WebTest):
         self.assertEqual(res.status_code, 302)
         resp = self.app.get(reverse('text_notes'))
         assert "NOTE CHANGED TO UPPER CASE" in resp
+        
+    def test_total_count(self):
+        """ Test total count of notes"""
+        resp = self.app.get(reverse('text_notes'))
+        form = resp.form
+        form['note'] = "Text note number 2"
+        res = form.submit()
+        self.assertEqual(res.status_code, 302)
+        resp = self.app.get(reverse('text_notes'))
+        assert "Text notes count: 2" in resp
