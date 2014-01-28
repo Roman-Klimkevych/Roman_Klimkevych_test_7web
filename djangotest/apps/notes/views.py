@@ -34,7 +34,6 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
     def post(self, request, *args, **kwargs):
         """ Check wether the form is valid or not."""
         form = AddNoteForm(request.POST)
-        print request
         if form.is_valid():
             return self.form_valid(form)
         else:
