@@ -4,7 +4,7 @@ from notes.models import Notes
 class NotesAdmin(admin.ModelAdmin):
 
     """
-    Create admin interface for text notes
+    Create admin interface for text notes.
     """
     
     list_display = ("title", "text")

@@ -83,7 +83,6 @@ class MyTestCase(WebTest):
                                 'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
                                 'note': 'Text note number 2'
                             })
-        print res
         self.assertEqual(res.status_code, 200)
-        assert '"count": 9' in res
+        assert '"count": 2' in res
         

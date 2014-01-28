@@ -4,7 +4,7 @@ from notes.forms import UpperCaseField
 class UpperCaseTextField(models.TextField):
 
     """
-    Create custom text field that returns notes changed to uppercase in the admin interface
+    Create custom text field that returns notes changed to uppercase in the admin interface.
     """
 
     def formfield(self, **kwargs):    
@@ -13,7 +13,7 @@ class UpperCaseTextField(models.TextField):
 class Notes(models.Model):
 
     """
-    Create model for text notes that contains note title and note text
+    Create model for text notes that contains note title and note text.
     """
 
     title = models.CharField(max_length=100, blank=True, verbose_name='note title')

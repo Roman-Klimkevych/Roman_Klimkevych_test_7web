@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from notes.views import NotesView
+from notes.views import NotesView, AjaxView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', NotesView.as_view(), name="text_notes"),
+    url(r'^ajaxnotes_json$', AjaxView.as_view(), name="ajax_notes"),
     # url(r'^hellodjango/', include('hellodjango.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
