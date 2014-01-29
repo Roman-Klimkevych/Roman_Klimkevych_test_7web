@@ -94,7 +94,7 @@ class MyTestCase(WebTest):
                             {   
                                 'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
                                 'note': 'Text note number 2',
-                                'image': 'http://placehold.it/200x200'
+                                'image': '/media/uploads/image.jpg'
                             })
         self.assertEqual(res.status_code, 200)
-        assert '<img src="http://placehold.it/200x200"' in res
+        assert '<img src="/media/uploads/image.jpg"' in res
