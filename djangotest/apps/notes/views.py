@@ -58,7 +58,7 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
         title = latest_note.title
         text = latest_note.text
         render = render_to_string('ajax_note.html', {'title': title, "text": text})
-        count = len(self.queryset.objects.all())
+        count = self.queryset.objects.count()
         message = "Your text note has been successfully added!!!"
         
         response_dict = {}

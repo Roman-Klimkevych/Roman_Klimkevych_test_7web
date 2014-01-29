@@ -6,7 +6,7 @@ def total_count(request):
     at every template.
 
     """
-    count = len(Notes.objects.all())
+    count = Notes.objects.count()
     return {
             'count': count,
         }
