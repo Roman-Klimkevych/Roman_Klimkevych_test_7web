@@ -86,3 +86,15 @@ class MyTestCase(WebTest):
         self.assertEqual(res.status_code, 200)
         assert '"count": 2' in res
         
+    def test_image(self):
+        """ Test ability to attach image to notes."""
+        resp = self.app.get(reverse('text_notes'))
+        form = resp.form
+        res = self.app.post(reverse('ajax_notes'), 
+                            {   
+                                'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
+                                'note': 'Text note number 2',
+                                'image': 'http://placehold.it/200x200'
+                            })
+        self.assertEqual(res.status_code, 200)
+        assert '<img src="http://placehold.it/200x200"' in res
