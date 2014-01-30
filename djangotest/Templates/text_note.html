@@ -1,3 +1,6 @@
 <li>
-	<p class="text-note">{{ text }}</p>
+	<p class="text-note col-xs-8">{{ text }}</p>
+	{% if image %}
+		<img src="{{ image.url }}" class="thumbnail img-responsive pull-right" alt="">
+	{% endif %}
 </li>

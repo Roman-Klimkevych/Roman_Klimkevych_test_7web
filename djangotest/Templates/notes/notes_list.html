@@ -5,12 +5,12 @@
   <div class="container">
     {% include 'add_note_form.html' %}
     <div class="row">
-      <div class="col-lg-12 text-center">
+      <div class="col-sm-12 text-center">
         <h2>Text Notes</h2>
         <p>Text notes count: <span id="count">{{ count }}</span></p>
         <hr>
       </div>
-      <ul id="notes_list" class="list-unstyled col-lg-12">
+      <ul id="notes_list" class="list-unstyled col-sm-12">
         {% for item in notes %}
         <div class="panel panel-info">
           <div class="panel-heading">{{ item.title }}</div>

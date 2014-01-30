@@ -12,6 +12,9 @@ class UpperCaseField(forms.CharField):
         except:
             raise forms.ValidationError
 
+# from south.modelsinspector import add_introspection_rules
+# add_introspection_rules([], ["^notes\.forms\.UpperCaseField"])
+
 class AddNoteForm(forms.Form):
 
     """    
@@ -22,8 +25,9 @@ class AddNoteForm(forms.Form):
         widget=forms.Textarea(attrs={
                 'placeholder':'# newnote', 
                 'class':'form-control',
-                'rows':5}),
+                'rows':6}),
         required=False)
+    image = forms.ImageField(required=False)
 
     def clean_note(self):
         """ Raise ValidationError when the note contains less than 10 symbols."""
@@ -32,3 +36,4 @@ class AddNoteForm(forms.Form):
         if num_symbs < 10:
             raise forms.ValidationError("Your note should contain at least 10 symbols!")
         return message
+

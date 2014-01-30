@@ -33,13 +33,13 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
     
     def post(self, request, *args, **kwargs):
         """ Check wether the form is valid or not."""
-        form = AddNoteForm(request.POST)
+        form = AddNoteForm(request.POST, request.FILES)
         if form.is_valid():
-            return self.form_valid(form)
+            return self.form_valid(form,request)
         else:
-            return self.form_invalid(form)
+            return self.form_invalid(form, request)
 
-    def form_valid(self, form):
+    def form_valid(self, form, request):
         """ 
         Perform actions for valid form.
 
@@ -51,13 +51,15 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
         
         note_id = self.queryset.objects.latest('id').id + 1
         new_note = form.cleaned_data['note']
-        added_note = Notes(title="Note_" + str(note_id), text=new_note)
+        new_image = form.cleaned_data['image']  # 
+        added_note = Notes(title="Note_" + str(note_id), text=new_note, image=new_image)
         added_note.save()
         
         latest_note = self.queryset.objects.latest('id')
         title = latest_note.title
         text = latest_note.text
-        render = render_to_string('ajax_note.html', {'title': title, "text": text})
+        image = latest_note.image
+        render = render_to_string('ajax_note.html', {'title': title, 'text': text, 'image': image})
         count = self.queryset.objects.count()
         message = "Your text note has been successfully added!!!"
         
@@ -65,7 +67,7 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
         response_dict.update({'new_note': render, 'count': count, 'message': message })
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
     
-    def form_invalid(self, form):
+    def form_invalid(self, form, request):
         """ 
         Perform actions for invalid form.
 
@@ -73,9 +75,10 @@ class NotesFormProcessor(MultipleObjectMixin, FormView):
         Return HttpResponse.
 
         """
-        error = form['note'].errors
+        error_note = form['note'].errors
+        error_image = form['image'].errors
         response_dict = {}
-        response_dict.update({'errors': error })
+        response_dict.update({'error_note': error_note, 'error_image': error_image })
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 class NotesView(View):

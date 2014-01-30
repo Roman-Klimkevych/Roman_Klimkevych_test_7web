@@ -11,4 +11,5 @@ def text_note(note_id):
     """
     note = Notes.objects.get(id=note_id)
     text = note.text
-    return {"text": text}
+    image = note.image
+    return {'text': text, 'image': image}

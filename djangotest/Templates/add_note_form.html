@@ -6,18 +6,29 @@
         
     </div>
 
-    <form class="form-vertical" action="" method="post">{% csrf_token %}
-        <div class="form-group col-md-7">
+    <form id="data" class="form-vertical" action="/ajaxnotes_json" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="form-group col-sm-7">
             <label class="control-label" for="id_note">New Text Note:</label>
-            <div id="errors" style="color: red" >
+            <div id="errors-note" style="color: red" >
                 <ul class="errorlist">
                     <li></li>
                 </ul>
             </div>
             {{ form.note }}
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-sm-5">
+            <label class="control-label" for="id_image">Attach image:</label>
+            <div id="errors-image" style="color: red" >
+                <ul class="errorlist">
+                    <li></li>
+                </ul>
+            </div>
+            {{ form.image }}
+        </div>
+        <img id="preview" src="" alt="">
+        <div class="form-group col-sm-6 pull-left">
             <input id="add_note" type="submit" value="Add note" class="btn btn-success" >
         </div>
     </form>
-    <hr>
+    
+    
