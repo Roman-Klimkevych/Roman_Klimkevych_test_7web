@@ -2,6 +2,8 @@ from django_webtest import WebTest
 from webtest import TestApp
 from django.core.wsgi import get_wsgi_application
 from django.core.urlresolvers import reverse
+# from djangotest import settings
+from django.conf import settings
 
 class MyTestCase(WebTest):
 
@@ -87,14 +89,25 @@ class MyTestCase(WebTest):
         assert '"count": 2' in res
         
     def test_image(self):
+        
         """ Test ability to attach image to notes."""
+        
         resp = self.app.get(reverse('text_notes'))
         form = resp.form
-        res = self.app.post(reverse('ajax_notes'), 
-                            {   
-                                'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
-                                'note': 'Text note number 2',
-                                'image': '/media/uploads/image.jpg'
-                            })
+        root = settings.PROJECT_ROOT + settings.STATIC_URL
+        img = root+'img/image.jpg'
+        
+        res = self.app.post(
+            url = reverse('ajax_notes'), 
+            params = {
+                'csrfmiddlewaretoken': form['csrfmiddlewaretoken'].value,
+                'note': 'Text note number 2',
+            } ,
+            headers = dict(X_REQUESTED_WITH='XMLHttpRequest'),
+            upload_files = [
+                ('image', img)
+            ]
+        )
+
         self.assertEqual(res.status_code, 200)
-        assert '<img src="/media/uploads/image.jpg"' in res
+        assert 'image.jpg' in res
