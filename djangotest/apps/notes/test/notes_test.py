@@ -98,10 +98,8 @@ class MyTestCase(WebTest):
         
         resp = self.app.get(reverse('text_notes'))
         form = resp.form
-        root = settings.PROJECT_ROOT + settings.STATIC_URL
-        root1 = settings.STATIC_ROOT
-        print root1
-        img = root+'img/image.jpg'
+        root = settings.STATIC_ROOT
+        img = root+'/img/image.jpg'
         
         res = self.app.post(
             url = reverse('ajax_notes'), 
