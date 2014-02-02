@@ -5,6 +5,8 @@ from django.views.generic.edit import FormMixin
 from django.views.generic.list import MultipleObjectMixin
 from notes.models import Notes
 from notes.forms import AddNoteForm
+from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.http import *
 from django.template.loader import render_to_string
 import json
@@ -27,7 +29,41 @@ class NotesDisplay(FormMixin, ListView):
 class NotesFormProcessor(MultipleObjectMixin, FormView):
     
     """
-    Display text notes and form when the request is post.
+    Display text notes and form when the request is post and not Ajax
+    """
+    
+    queryset = Notes.objects.order_by('-id')
+    form_class = AddNoteForm
+    context_object_name = 'notes'
+    template_name = 'notes/notes_list.html'
+
+    def post(self, request, *args, **kwargs):
+        """ Check wether the form is valid or not"""
+        form = AddNoteForm(request.POST, request.FILES)
+        self.object_list = self.get_queryset()
+        if form.is_valid():
+            messages.success(request, "Your text note has been successfully added!!!")
+            return self.form_valid(form)
+        else:
+            return super(NotesFormProcessor, self).form_invalid(form)
+
+    def form_valid(self, form):
+        """ Save note to the database when the form is valid"""
+        note_id = Notes.objects.latest('id').id + 1
+        new_note = form.cleaned_data['note']
+        new_image = form.cleaned_data['image']
+        added_note = Notes(title="Note_" + str(note_id), text=new_note, image=new_image)
+        added_note.save()
+        return super(NotesFormProcessor, self).form_valid(form)
+
+    def get_success_url(self):
+        """ Return URL to redirect when the form is valid"""
+        return reverse('text_notes')
+
+class AjaxFormProcessor(MultipleObjectMixin, FormView):
+    
+    """
+    Display text notes and form posted by ajax.
     """
     queryset = Notes
     
@@ -99,6 +135,9 @@ class AjaxView(View):
     """
 
     def post(self, request, *args, **kwargs):
-        """ Return NotesFormProcessor if the request is post."""
-        view = NotesFormProcessor.as_view()
+        """ Check if the request is ajax and return view to process form."""
+        if request.is_ajax():
+            view = AjaxFormProcessor.as_view()
+        else:
+            view = NotesFormProcessor.as_view()
         return view(request, *args, **kwargs)

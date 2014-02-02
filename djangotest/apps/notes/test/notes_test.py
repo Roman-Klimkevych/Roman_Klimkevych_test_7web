@@ -50,7 +50,8 @@ class MyTestCase(WebTest):
                             {   
                                 'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
                                 'note': 'Note with more than 10 symbols'
-                            })
+                            },
+                            headers = dict(X_REQUESTED_WITH='XMLHttpRequest'))
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.content_type, "application/javascript")
         assert "Your text note has been successfully added!!!" in res
@@ -60,7 +61,8 @@ class MyTestCase(WebTest):
                             {   
                                 'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
                                 'note': '123456789'
-                            })
+                            },
+                            headers = dict(X_REQUESTED_WITH='XMLHttpRequest'))
         self.assertEqual(res.status_code, 200)
         assert "Your note should contain at least 10 symbols!" in res
 
@@ -72,7 +74,8 @@ class MyTestCase(WebTest):
                             {   
                                 'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
                                 'note': 'Note changed to upper case'
-                            })
+                            },
+                            headers = dict(X_REQUESTED_WITH='XMLHttpRequest'))
         self.assertEqual(res.status_code, 200)
         assert "NOTE CHANGED TO UPPER CASE" in res
         
@@ -84,7 +87,8 @@ class MyTestCase(WebTest):
                             {   
                                 'csrfmiddlewaretoken':form['csrfmiddlewaretoken'].value,
                                 'note': 'Text note number 2'
-                            })
+                            },
+                            headers = dict(X_REQUESTED_WITH='XMLHttpRequest'))
         self.assertEqual(res.status_code, 200)
         assert '"count": 2' in res
         
@@ -95,6 +99,8 @@ class MyTestCase(WebTest):
         resp = self.app.get(reverse('text_notes'))
         form = resp.form
         root = settings.PROJECT_ROOT + settings.STATIC_URL
+        root1 = settings.STATIC_ROOT
+        print root1
         img = root+'img/image.jpg'
         
         res = self.app.post(
@@ -108,6 +114,18 @@ class MyTestCase(WebTest):
                 ('image', img)
             ]
         )
-
         self.assertEqual(res.status_code, 200)
         assert 'image.jpg' in res
+
+        """ Check from submited without ajax"""
+        form['note'] = "Note with more than 10 symbols"
+        resp = form.submit(
+            upload_files = [
+                ('image', img)
+            ])
+        resp = resp.follow()
+        self.assertEqual(resp.status_code, 200)
+        assert 'image.jpg' in resp
+        
+
+
