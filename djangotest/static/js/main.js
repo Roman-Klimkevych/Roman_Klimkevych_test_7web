@@ -1,6 +1,20 @@
 (function () {
+    var $pickButton = $("#color");
+        $widgetCode = $("#widget-code");
+
+    $("#choose_color li a").on("click", function () {
+        var color = $(this).text();
+            code = '<script type="text/javascript" src="http://127.0.0.1:8000/widget/color=' +color +'"></script>';
+        $pickButton.text(color);
+        $widgetCode.text(code);
+
+    });
+
+
+
     var input = document.getElementById("id_image"),
         formdata = false;
+
       
     function showUploadedItem (source) {
         var img  = document.getElementById("preview");

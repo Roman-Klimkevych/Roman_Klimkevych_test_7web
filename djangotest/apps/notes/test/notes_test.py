@@ -127,7 +127,7 @@ class MyTestCase(WebTest):
         
     def test_widget(self):
         """ Test html widget."""
-        resp = self.app.get(reverse('widget'))
+        resp = self.app.get(reverse('widget', args=['blue']))
         self.assertEqual(resp.status_code, 200)
         assert 'document.write' in resp
 

@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from notes.views import NotesView, AjaxView
+from notes.views import NotesView, AjaxView, WidgetView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', NotesView.as_view(), name="text_notes"),
     url(r'^ajaxnotes_json$', AjaxView.as_view(), name="ajax_notes"),
+    url(r'^widget/color=([^/]+)$', WidgetView.as_view(), name="widget"),
     # url(r'^hellodjango/', include('hellodjango.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

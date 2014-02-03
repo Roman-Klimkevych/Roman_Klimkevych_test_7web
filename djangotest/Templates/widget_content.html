@@ -1,0 +1,19 @@
+{% load custom_tags %}
+<div class="container" style="max-width:500px;">
+	<div class="row">
+	  <div class="col-sm-12 text-center">
+	    <h2>Random Note</h2>
+	    <hr>
+	  </div>
+	  <ul id="notes_list" class="list-unstyled col-sm-12">
+	    
+	    <div class="panel {{ class }}">
+	      <div class="panel-heading">{{ note.title }}</div>
+	        <div class="panel-body">
+	          {% text_note note.id %}
+	        </div>
+	    </div>  
+	    
+	  </ul>
+	</div><!-- /.row -->
+</div><!-- /.container -->

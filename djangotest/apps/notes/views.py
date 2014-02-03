@@ -141,3 +141,30 @@ class AjaxView(View):
         else:
             view = NotesFormProcessor.as_view()
         return view(request, *args, **kwargs)
+
+from django.template import loader, Context, RequestContext
+from django.shortcuts import render_to_response
+from random import choice
+
+class WidgetView(ListView):
+    
+    """
+    Widget to display random text note.
+    """
+    
+    queryset = Notes
+    
+    def get(self, request, color="blue"):
+        color_dict = {
+            "blue": "panel-info",
+            "green": "panel-success",
+            "yellow": "panel-warning",
+            "red": "panel-danger"
+            }
+        notes = self.queryset.objects.all().values_list("id", flat=True)
+        random_id = choice(notes)
+        note = self.queryset.objects.get(id=random_id)
+        t = loader.get_template('widget_content.html')
+        c = Context({'note' : note, 'class': color_dict[color]})
+        context = {"widget_content" : t.render(c)}
+        return render_to_response("widget.html", context, context_instance=RequestContext(request))

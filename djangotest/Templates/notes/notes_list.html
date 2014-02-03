@@ -22,4 +22,37 @@
       </ul>
     </div><!-- /.row -->
   </div><!-- /.container -->
+
+ 
+  <!-- Modal window-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Get Widget</h4>
+      </div>
+      <div class="modal-body">
+        <div class="dropdown col-sm-6">
+          <button class="btn btn-success" data-toggle="dropdown">Choose colors </span></button>
+          <button class="btn btn-success" data-toggle="dropdown" id="color"><span class="caret"></span></button>
+          <ul class="dropdown-menu" id="choose_color">
+            <li><a href="#" tabindex="-1">blue</a></li>
+            <li><a href="#" tabindex="-1">green</a></li>
+            <li><a href="#" tabindex="-1">red</a></li>
+            <li><a href="#" tabindex="-1">yellow</a></li>
+          </ul>
+        </div>
+        <div class="clearfix">
+        <textarea id="widget-code" class="col-sm-6" cols='40' rows='5'><script type="text/javascript" src="http://127.0.0.1:8000/widget"></script>
+        </textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 {% endblock %}

@@ -1,5 +1,6 @@
 from django import template
 from notes.models import Notes
+import re
 
 register = template.Library()
 
@@ -13,3 +14,9 @@ def text_note(note_id):
     text = note.text
     image = note.image
     return {'text': text, 'image': image}
+
+@register.filter(is_safe=True)
+def stripwhitespace(value):
+    inbetween = re.compile('>[ \r\n]+<')
+    newlines = re.compile('\r|\n')
+    return newlines.sub('', inbetween.sub('><', value))
