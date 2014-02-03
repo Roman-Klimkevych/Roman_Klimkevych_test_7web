@@ -98,8 +98,8 @@ class MyTestCase(WebTest):
         
         resp = self.app.get(reverse('text_notes'))
         form = resp.form
-        root = settings.STATIC_ROOT
-        img = root+'/img/image.jpg'
+        root = settings.PROJECT_ROOT + settings.STATIC_URL
+        img = root+'img/image.jpg'
         
         res = self.app.post(
             url = reverse('ajax_notes'), 
@@ -125,5 +125,9 @@ class MyTestCase(WebTest):
         self.assertEqual(resp.status_code, 200)
         assert 'image.jpg' in resp
         
-
+    def test_widget(self):
+        """ Test html widget."""
+        resp = self.app.get(reverse('widget'))
+        self.assertEqual(resp.status_code, 200)
+        assert 'document.write' in resp
 
