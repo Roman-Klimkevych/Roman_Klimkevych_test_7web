@@ -107,7 +107,7 @@ ROOT_URLCONF = 'djangotest.urls'
 WSGI_APPLICATION = 'djangotest.wsgi.application'
 
 TEMPLATE_DIRS = (
-    'djangotest/libs/Templates'
+    'djangotest/Templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -121,7 +121,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'notes',
-    'template_lib',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -180,5 +179,5 @@ STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'libs/static'),
+    os.path.join(BASE_DIR, 'static'),
 )
