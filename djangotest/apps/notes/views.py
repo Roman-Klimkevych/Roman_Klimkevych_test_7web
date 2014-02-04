@@ -3,6 +3,11 @@ from django.views.generic import ListView
 from notes.models import Notes
 
 class NotesView(ListView):
+
+	"""
+    Display text notes.
+    """
+
 	model = Notes
 	context_object_name = "notes"
 
