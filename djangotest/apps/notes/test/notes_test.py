@@ -1,9 +1,11 @@
 from django_webtest import WebTest
 from webtest import TestApp
+from notes.models import Notes
 from django.core.urlresolvers import reverse
 from django.core.wsgi import get_wsgi_application
 from django.conf.urls import patterns, include, url
 import re
+from django.template import Template, Context, TemplateSyntaxError
 
 
 class NotesTestCase(WebTest):
@@ -40,9 +42,14 @@ class NotesTestCase(WebTest):
         """ Test custom inclusion tag. """
 
         """ Check response status. """
+        
         resp = self.app.get(reverse('text_notes'))
         self.assertEqual(resp.status_code, 200)
         
         """ Check custom template tag functionality in response. """
-        note=re.search(r'<p class="text-note">\w+</p>', str(resp))
-        assert note.group() in resp
+        
+        note = Notes.objects.create(title='Note_1', text="Text Note")
+        t = Template('{% load custom_tags %}{% text_note id %}')
+        c = Context({"id": note.id})
+        resp = t.render(c)
+        assert '<p class="text-note">Text Note</p>' in resp
