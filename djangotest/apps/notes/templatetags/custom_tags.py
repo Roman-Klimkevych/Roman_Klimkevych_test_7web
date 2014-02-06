@@ -4,11 +4,11 @@ import re
 
 register = template.Library()
 
-@register.inclusion_tag('text_note.html')
+@register.inclusion_tag('notes/text_note.html')
 def text_note(note_id):
     """ 
     Create custom inclusion template tag 
-    that will render one text note by given id
+    that will render one text note by given id.
     """
     note = Notes.objects.get(id=note_id)
     text = note.text
@@ -17,6 +17,7 @@ def text_note(note_id):
 
 @register.filter(is_safe=True)
 def stripwhitespace(value):
+    """ Custom filter to strip whitespace. """
     inbetween = re.compile('>[ \r\n]+<')
     newlines = re.compile('\r|\n')
     return newlines.sub('', inbetween.sub('><', value))

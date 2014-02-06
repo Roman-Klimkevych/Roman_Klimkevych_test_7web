@@ -95,7 +95,7 @@ class AjaxFormProcessor(MultipleObjectMixin, FormView):
         title = latest_note.title
         text = latest_note.text
         image = latest_note.image
-        render = render_to_string('ajax_note.html', {'title': title, 'text': text, 'image': image})
+        render = render_to_string('notes/ajax_note.html', {'title': title, 'text': text, 'image': image})
         count = self.queryset.objects.count()
         message = "Your text note has been successfully added!!!"
         
